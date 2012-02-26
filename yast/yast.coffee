@@ -14,20 +14,24 @@ yast.options =
     host: 'www.yast.com'
   method: 'GET'
 
+# Construct the endpoint. 
 yast.endpoint = -> url.format 
   protocol: yast.options.location.protocol
   host: yast.options.location.host
   pathname: "#{yast.options.version}/"
 
+# Construct a base XMLBuilder object - <request req='`method`'></request>
 yast.requestBase = (method) -> xmlbuilder.create()
   .begin('request').att('req', method)
 
+# Perform a request to the YAST API with the given XML. 
 yast.request = (xml, callback) -> request { 
     method: yast.options.method
     qs: { request: xml }
     uri: yast.endpoint() 
   }, callback
 
+# Login method. Callback format: ƒ(err, hash)
 yast.login = (user, password, callback) ->
   reqdoc = yast.requestBase('auth.login')
     .ele('user').txt(user).up()
