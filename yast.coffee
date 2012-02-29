@@ -54,7 +54,6 @@ yast.groom = (errCallback, okCallback) ->
       return errCallback yast.options.statusCodes[result['@'].status] if result['@'].status isnt '0'
       okCallback result
 
-
 # Perform a request to the YAST API with the given XML. 
 yast.request = (xml, callback, options = yast.options) -> request { 
     method: options.method
@@ -78,11 +77,9 @@ yast.login = (user, password, callback) ->
   yast.request reqdoc.toString(), yast.groom callback, (result) ->
     callback null, user: user, hash: result.hash
 
-# Get the folders for the given user. CB Format: ƒ(err, folders)
 yast.folders = (user, callback) -> yast.objectRequest user, 'data.getFolders', 'folder', callback
-
-# Get the projects for the given user.
 yast.projects = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', callback
+yast.recordTypes = (user, callback) -> yast.objectRequest user, 'data.getRecordTypes', 'recordType', callback
 
 
 
