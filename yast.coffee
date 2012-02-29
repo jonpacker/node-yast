@@ -76,7 +76,12 @@ yast.login = (user, password, callback) ->
 yast.folders = (user, callback) ->
   reqdoc = yast.requestBase 'data.getFolders', user
   yast.request reqdoc.toString(), yast.groom callback, (result) ->
-    callback null, result.objects.folder
+    callback null, result.objects.folder || []
+
+yast.projects = (user, callback) ->
+  reqdoc = yast.requestBase 'data.getProjects', user
+  yast.request reqdoc.toString(), yast.groom callback, (result) ->
+    callback null, request.objects.project || []
 
 
 
