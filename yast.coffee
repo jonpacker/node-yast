@@ -62,6 +62,12 @@ yast.request = (xml, callback, options = yast.options) -> request {
     uri: yast.endpoint(options) 
   }, callback
 
+# Requests a generic set of objects with the given name using the given API function
+yast.objectRequest = (user, functionName, objectName, callback) ->
+  reqdoc = yast.requestBase functionName, user
+  yast.request reqdoc.toString(), yast.groom callback, (result) ->
+    callback null, result.objects[objectName] || []
+
 # Login method. Callback format: ƒ(err, user). The return object contains the user
 # and hash and is used as a key to all of the other API functions.
 yast.login = (user, password, callback) ->
@@ -73,15 +79,10 @@ yast.login = (user, password, callback) ->
     callback null, user: user, hash: result.hash
 
 # Get the folders for the given user. CB Format: ƒ(err, folders)
-yast.folders = (user, callback) ->
-  reqdoc = yast.requestBase 'data.getFolders', user
-  yast.request reqdoc.toString(), yast.groom callback, (result) ->
-    callback null, result.objects.folder || []
+yast.folders = (user, callback) -> yast.objectRequest user, 'data.getFolders', 'folder', callback
 
-yast.projects = (user, callback) ->
-  reqdoc = yast.requestBase 'data.getProjects', user
-  yast.request reqdoc.toString(), yast.groom callback, (result) ->
-    callback null, request.objects.project || []
+# Get the projects for the given user.
+yast.projects = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', callback
 
 
 
