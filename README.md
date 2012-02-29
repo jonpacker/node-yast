@@ -1,6 +1,6 @@
 This is a wrapper around the Yast API written in CoffeeScript. It is not complete as yet. Functionality is implemented as I need it.
 
-**This is an extremely immature project. There's not package.json, it's not listen in NPM. That's up to you, if you want to use it.**
+**This is an extremely immature project. There's no package.json, it's not listed in NPM. Integration is up to you.**
 
 Usage example:
 
