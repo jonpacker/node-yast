@@ -81,6 +81,4 @@ yast.folders = (user, callback) -> yast.objectRequest user, 'data.getFolders', '
 yast.projects = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', callback
 yast.recordTypes = (user, callback) -> yast.objectRequest user, 'data.getRecordTypes', 'recordType', callback
 
-
-
 module.exports = yast
