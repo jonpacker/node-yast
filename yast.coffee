@@ -2,6 +2,7 @@
 
 xmlbuilder = require 'xmlbuilder'
 xmlparser = require 'libxml-to-js'
+_ = require 'underscore'
 request = require 'request'
 url = require 'url'
 
@@ -79,6 +80,26 @@ yast.login = (user, password, callback) ->
 
 yast.folders = (user, callback) -> yast.objectRequest user, 'data.getFolders', 'folder', callback
 yast.projects = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', callback
-yast.recordTypes = (user, callback) -> yast.objectRequest user, 'data.getRecordTypes', 'recordType', callback
+yast.recordTypes = (user, callback) -> yast.objectRequest user, 'meta.getRecordTypes', 'recordType', callback
+
+yast.collectChildren = (collection, parentId = '0') ->
+  (object for object in collection when object.parentId is parentId)
+
+yast.treeify = (objectCollections) ->
+  addTree = (parent) ->
+    parent.children = _.flatten((yast.collectChildren collection, parent.id for collection in objectCollections), true)
+    addTree child for child in parent.children
+
+  rootNodes = (object for object in _.flatten(objectCollections, true) when object.parentId is '0')
+  addTree rootNode for rootNode in rootNodes
+
+  return rootNodes
+
+yast.projectTree = (user, callback) -> 
+  yast.folders user, (err, folders) ->
+    return callback err if err
+    yast.projects user, (err, projects) -> 
+      return callback err if err
+      callback null, yast.treeify [projects, folders]
 
 module.exports = yast
