@@ -93,10 +93,10 @@ yast.user = (user, callback) ->
   reqdoc = yast.requestBase('user.getInfo', user)
   yast.request = yast.groom callback, (result) -> callback null, result
 
-yast.collectChildren = (collection, parentId = '0') ->
+yast.treeify = (objectCollections) ->
+  collectChildren = (collection, parentId = '0') ->
   (object for object in collection when object.parentId is parentId)
 
-yast.treeify = (objectCollections) ->
   addTree = (parent) ->
     parent.children = _.flatten((yast.collectChildren collection, parent.id for collection in objectCollections), true)
     addTree child for child in parent.children
