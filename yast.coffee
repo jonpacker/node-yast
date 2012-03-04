@@ -88,6 +88,11 @@ yast.recordTypes     = (user, callback) -> yast.objectRequest user, 'meta.getRec
 # see http://www.yast.com/wiki/index.php/API:data.getRecords for more details.
 yast.records = (user, params, callback) -> yast.objectRequest user, 'data.getRecords', 'record', params, callback
 
+# Get info about the user with the given details
+yast.user = (user, callback) -> 
+  reqdoc = yast.requestBase('user.getInfo', user)
+  yast.request = yast.groom callback, (result) -> callback null, result
+
 yast.collectChildren = (collection, parentId = '0') ->
   (object for object in collection when object.parentId is parentId)
 
@@ -107,6 +112,5 @@ yast.projectTree = (user, callback) ->
     yast.projects user, (err, projects) -> 
       return callback err if err
       callback null, yast.treeify [projects, folders]
-
 
 module.exports = yast
