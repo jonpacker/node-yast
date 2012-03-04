@@ -108,4 +108,22 @@ yast.projectTree = (user, callback) ->
       return callback err if err
       callback null, yast.treeify [projects, folders]
 
+class yast.Project
+  constructor: (@data, @user) ->
+  records: (from, to, typeId, callback) ->
+    return @records(null, null, null, from) if typeof from is 'function'
+    return @records(from, to, null, typeId) if typeof typeId is 'function'
+
+    params = {}
+    from = Math.floor(from.valueOf()) if from instanceof Date
+    to = Math.ceil(to.valueOf()) if to instanceof Date
+
+    params.timeFrom = from if from?
+    params.timeTo = to if to?
+    params.typeId = typeId if typeId?
+    params.parentId = @data.id
+
+    yast.records @user, params, callback
+
+
 module.exports = yast
