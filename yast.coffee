@@ -80,9 +80,13 @@ yast.login = (user, password, callback) ->
   yast.request reqdoc.toString(), yast.groom callback, (result) ->
     callback null, user: user, hash: result.hash
 
-yast.folders = (user, callback) -> yast.objectRequest user, 'data.getFolders', 'folder', {}, callback
-yast.projects = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', {}, callback
-yast.recordTypes = (user, callback) -> yast.objectRequest user, 'meta.getRecordTypes', 'recordType', {}, callback
+yast.folders         = (user, callback) -> yast.objectRequest user, 'data.getFolders', 'folder', {}, callback
+yast.projects        = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', {}, callback
+yast.recordTypes     = (user, callback) -> yast.objectRequest user, 'meta.getRecordTypes', 'recordType', {}, callback
+
+# Params can be typeId, parentId, timeFrom and timeTo.
+# see http://www.yast.com/wiki/index.php/API:data.getRecords for more details.
+yast.records = (user, params, callback) -> yast.objectRequest user, 'data.getRecords', 'record', params, callback
 
 yast.collectChildren = (collection, parentId = '0') ->
   (object for object in collection when object.parentId is parentId)
