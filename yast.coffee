@@ -63,8 +63,10 @@ yast.request = (xml, callback, options = yast.options) -> request {
   }, callback
 
 # Requests a generic set of objects with the given name using the given API function
-yast.objectRequest = (user, functionName, objectName, callback) ->
+yast.objectRequest = (user, functionName, objectName, params = {}, callback) ->
   reqdoc = yast.requestBase functionName, user
+  reqdoc.ele(paramName).txt(value).up() for paramName, value of params
+
   yast.request reqdoc.toString(), yast.groom callback, (result) ->
     callback null, result.objects[objectName] || []
 
@@ -78,9 +80,9 @@ yast.login = (user, password, callback) ->
   yast.request reqdoc.toString(), yast.groom callback, (result) ->
     callback null, user: user, hash: result.hash
 
-yast.folders = (user, callback) -> yast.objectRequest user, 'data.getFolders', 'folder', callback
-yast.projects = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', callback
-yast.recordTypes = (user, callback) -> yast.objectRequest user, 'meta.getRecordTypes', 'recordType', callback
+yast.folders = (user, callback) -> yast.objectRequest user, 'data.getFolders', 'folder', {}, callback
+yast.projects = (user, callback) -> yast.objectRequest user, 'data.getProjects', 'project', {}, callback
+yast.recordTypes = (user, callback) -> yast.objectRequest user, 'meta.getRecordTypes', 'recordType', {}, callback
 
 yast.collectChildren = (collection, parentId = '0') ->
   (object for object in collection when object.parentId is parentId)
