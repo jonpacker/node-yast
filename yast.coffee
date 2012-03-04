@@ -5,6 +5,7 @@ xmlparser = require 'libxml-to-js'
 _ = require 'underscore'
 request = require 'request'
 url = require 'url'
+async = require 'async'
 
 yast = {}
 
@@ -93,9 +94,10 @@ yast.user = (user, callback) ->
   reqdoc = yast.requestBase('user.getInfo', user)
   yast.request = yast.groom callback, (result) -> callback null, result
 
+# Retrieve a tree structure that combines all of the given collections of objects (records, folders or projects)
 yast.treeify = (objectCollections) ->
   collectChildren = (collection, parentId = '0') ->
-  (object for object in collection when object.parentId is parentId)
+    (object for object in collection when object.parentId is parentId)
 
   addTree = (parent) ->
     parent.children = _.flatten((yast.collectChildren collection, parent.id for collection in objectCollections), true)
@@ -106,11 +108,20 @@ yast.treeify = (objectCollections) ->
 
   return rootNodes
 
-yast.projectTree = (user, callback) -> 
-  yast.folders user, (err, folders) ->
+yast.projectTree = (user, callback) -> yast.tree user, callback, false
+yast.tree = (user, callback, includeRecords = true) -> yast.multiUserTree [user], callback, includeRecords
+
+yast.multiUserTree = (users, callback, includeRecords = true) ->
+  done = (objs...) -> callback null, yast.treeify objs
+
+  # todo - improve this somehow from 'just' using the first user.
+  yast.folders _.first(users), (err, folders) ->
     return callback err if err
-    yast.projects user, (err, projects) -> 
+    yast.projects _.first(users), (err, projects) -> 
       return callback err if err
-      callback null, yast.treeify [projects, folders]
+      return done folders, projects if not includeRecords
+      async.parallel ( ((cb) -> yast.records user, {}, cb) for user in users ), (err, allRecords) ->
+        return callback err if err
+        done folders, projects, _.flatten(allRecords, true)
 
 module.exports = yast
