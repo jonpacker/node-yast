@@ -1,8 +1,8 @@
 {
-  "name": "yast.coffee",
+  "name": "yast",
   "version": "0.0.0",
   "description": "This is a wrapper around the Yast API written in CoffeeScript. It is not complete as yet. Functionality is implemented as I need it.",
-  "main": "yast.coffee",
+  "main": "yast.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +17,7 @@
     "libxml-to-js": "~0.3.11",
     "underscore": "~1.4.4",
     "async": "~0.2.5",
-    "request": "~2.12.0"
+    "request": "~2.12.0",
+    "coffee-script": "~1.4.0"
   }
 }
