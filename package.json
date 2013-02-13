@@ -1,6 +1,6 @@
 {
   "name": "yast",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "This is a wrapper around the Yast API written in CoffeeScript. It is not complete as yet. Functionality is implemented as I need it.",
   "main": "yast.js",
   "scripts": {
