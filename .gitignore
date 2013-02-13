@@ -1,2 +1,4 @@
 test.coffee
 .DS_Store
+*.swp
+node_modules
