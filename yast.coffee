@@ -94,7 +94,23 @@ yast.recordTypes = (user, callback) ->
 
 # Params can be typeId, parentId, timeFrom and timeTo.
 # see http://www.yast.com/wiki/index.php/API:data.getRecords for more details.
-yast.records = (user, params, callback) -> yast.objectRequest user, 'data.getRecords', 'record', params, callback
+yast.rawRecords = (user, params, callback) ->
+  yast.objectRequest user, 'data.getRecords', 'record', params, callback
+
+yast.records = (user, params, callback) ->
+  yast.objectRequest user, 'data.getRecords', 'record', params, (err, records) ->
+    return callback(err) if err
+    prettifyRecord = (record) ->
+      return {
+        id: record.id,
+        start: record.variables.v[0]['#'],
+        finish: record.variables.v[1]['#'],
+        desc: record.variables.v[2]['#'],
+        rate: record.variables.v[5]['#'],
+        billable: record.variables.v[6]['#'] is '1',
+        project: record.project
+      }
+    callback null, records.map(prettifyRecord)
 
 # Get info about the user with the given details
 yast.user = (user, callback) ->
