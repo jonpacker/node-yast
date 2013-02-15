@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jonpacker/yast.git"
+    "url": "git://github.com/jonpacker/node-yast.git"
   },
   "author": "Jon Packer <contact@jonpacker.com>",
   "license": "MIT",
