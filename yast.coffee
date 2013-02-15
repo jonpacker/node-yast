@@ -150,4 +150,6 @@ yast.multiUserTree = (users, callback, includeRecords = true) ->
           return callback err if err
           done folders, projects, _.flatten(allRecords, true)
 
+yast.analytics = require('./yanalytics')(yast)
+
 module.exports = yast
