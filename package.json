@@ -1,17 +1,17 @@
 {
   "name": "yast",
   "version": "0.1.0",
-  "description": "This is a wrapper around the Yast API written in CoffeeScript. It is not complete as yet. Functionality is implemented as I need it.",
+  "description": "A wrapper small and incomplete wrapper around the YAST api.",
   "main": "yast.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jonpacker/yast.coffee.git"
+    "url": "git://github.com/jonpacker/yast.git"
   },
-  "author": "",
-  "license": "BSD",
+  "author": "Jon Packer <contact@jonpacker.com>",
+  "license": "MIT",
   "dependencies": {
     "xmlbuilder": "~0.4.2",
     "libxml-to-js": "~0.3.11",
