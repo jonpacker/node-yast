@@ -38,7 +38,7 @@ module.exports = (yast) ->
       yanalytics.analyticsForRecordQuery user, {
         timeFrom: yanalytics.ts(from),
         timeTo: yanalytics.ts(to),
-        projectId: prj
+        parentId: prj
       }, analytics, callback
 
     analyticsForRecordQuery: (user, query, analytics, callback) ->
