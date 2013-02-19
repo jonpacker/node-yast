@@ -1,5 +1,4 @@
 require 'date-utils'
-require 'colors'
 _ = require 'underscore'
 
 module.exports = (yast) ->
