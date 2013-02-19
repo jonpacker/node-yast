@@ -35,6 +35,22 @@ yast.login('<yast username>', '<yast password>', function(err, user) {
 * yast.user(user, callback) -> (err, userInfo)
 * yast.projectTree(user, callback) -> (err, projectTree)
 
+## Multiple Login
+
+Since yast doesn't provide any ability to request records for an entire
+organization, some primitive multi-user support is available. To use it, supply
+an array of users to yast.login. For example:
+
+```yast.login([{ user: 'username1',
+                 password: 'password1' },
+               { user: 'username2',
+                 password: 'password2' }], callback);
+```
+
+This will return an array of the hashes for these users. If you then supply this
+array to the API functions (excluding 'yast.user'), you will be return an array
+of results (one for each user) rather than a single set of results. 
+
 ## Analytics functions
 
 Note: when an `analytics` object is required for any of these functions, it
