@@ -109,6 +109,16 @@ yast.rawRecords = (user, params, callback) ->
 yast.records = (user, params, callback) ->
   yast.objectRequest user, 'data.getRecords', 'record', params, (err, records) ->
     return callback(err) if err
+    if not record.variables
+      return {
+        id: record.id,
+        project: record.project,
+        start: 0,
+        finish: 0,
+        desc: "",
+        rate: 0,
+        billable: false
+      }
     prettifyRecord = (record) ->
       return {
         id: record.id,
