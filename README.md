@@ -41,10 +41,11 @@ Since yast doesn't provide any ability to request records for an entire
 organization, some primitive multi-user support is available. To use it, supply
 an array of users to yast.login. For example:
 
-```yast.login([{ user: 'username1',
-                 password: 'password1' },
-               { user: 'username2',
-                 password: 'password2' }], callback);
+```
+yast.login([{ user: 'username1',
+              password: 'password1' },
+            { user: 'username2',
+              password: 'password2' }], callback);
 ```
 
 This will return an array of the hashes for these users. If you then supply this
