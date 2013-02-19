@@ -19,6 +19,7 @@
     "async": "~0.2.5",
     "request": "~2.12.0",
     "coffee-script": "~1.4.0",
-    "date-utils": "~1.2.12"
+    "date-utils": "~1.2.12",
+    "naan": "~1.3.10"
   }
 }

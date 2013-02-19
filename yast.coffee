@@ -6,6 +6,7 @@ _ = require 'underscore'
 request = require 'request'
 url = require 'url'
 async = require 'async'
+naan = require 'naan'
 
 yast = {}
 
@@ -69,15 +70,23 @@ yast.request = (xml, callback, options = yast.options) -> request {
 # Requests a generic set of objects with the given name using the given API
 # function
 yast.objectRequest = (user, functionName, objectName, params = {}, callback) ->
+  if Array.isArray(user)
+    return async.map(user, naan.ncurry(yast.objectRequest, [functionName, objectName, params], 1), callback)
+    
   reqdoc = yast.requestBase functionName, user
   reqdoc.ele(paramName).txt(value).up() for paramName, value of params
 
   yast.request reqdoc.toString(), yast.groom callback, (result) ->
     callback null, result.objects[objectName] || []
 
+yast.multiLogin = (users, callback) ->
+  login = (user, cb) -> yast.login(user.user, user.password, cb)
+  async.map users, login, callback
+
 # Login method. Callback format: ƒ(err, user). The return object contains the 
 # user and hash and is used as a key to all of the other API functions.
 yast.login = (user, password, callback) ->
+  return yast.multiLogin(user, password) if Array.isArray(user)
   reqdoc = yast.requestBase('auth.login')
     .ele('user').txt(user).up()
     .ele('password').txt(password).up()
