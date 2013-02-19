@@ -124,7 +124,7 @@ yast.treeify = (objectCollections) ->
     (object for object in collection when object.parentId is parentId)
 
   addTree = (parent) ->
-    children = (yast.collectChildren collection, parent.id for collection in objectCollections)
+    children = (collectChildren collection, parent.id for collection in objectCollections)
     parent.children = _.flatten(children, true)
     addTree child for child in parent.children
 
