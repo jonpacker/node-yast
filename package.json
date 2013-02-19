@@ -1,6 +1,6 @@
 {
   "name": "yast",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A wrapper small and incomplete wrapper around the YAST api.",
   "main": "yast.js",
   "scripts": {
