@@ -94,10 +94,22 @@ yast.login = (user, password, callback) ->
   yast.request reqdoc.toString(), yast.groom callback, (result) ->
     callback null, user: user, hash: result.hash
 
+idUnion = (objects) ->
+  _.uniq([].concat.apply(Array::, objects), false, (obj) -> obj.id)
+
+joinResults = (user, callback) ->
+  return (err, objs) ->
+    return callback(err) if err
+    if not Array.isArray(user)
+      callback(null, objs)
+    else
+      callback(null, idUnion(objs))
+
 yast.folders = (user, callback) ->
-  yast.objectRequest user, 'data.getFolders', 'folder', {}, callback
+  yast.objectRequest user, 'data.getFolders', 'folder', {}, joinResults(user, callback)
+
 yast.projects = (user, callback) ->
-  yast.objectRequest user, 'data.getProjects', 'project', {}, callback
+  yast.objectRequest user, 'data.getProjects', 'project', {}, joinResults(user, callback)
 yast.recordTypes = (user, callback) ->
   yast.objectRequest user, 'meta.getRecordTypes', 'recordType', {}, callback
 
@@ -107,7 +119,7 @@ yast.rawRecords = (user, params, callback) ->
   yast.objectRequest user, 'data.getRecords', 'record', params, callback
 
 yast.records = (user, params, callback) ->
-  yast.objectRequest user, 'data.getRecords', 'record', params, (err, records) ->
+  yast.objectRequest user, 'data.getRecords', 'record', params, joinResults user, (err, records) ->
     return callback(err) if err
     prettifyRecord = (record) ->
       if not record.variables
