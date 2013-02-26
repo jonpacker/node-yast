@@ -141,6 +141,7 @@ yast.records = (user, params, callback) ->
         billable: record.variables.v[6]['#'] is '1',
         project: record.project
       }
+    records = [records] if !Array.isArray(records)
     callback null, records.map(prettifyRecord)
 
 # Get info about the user with the given details
