@@ -1,4 +1,5 @@
 require 'date-utils'
+naan = require 'naan'
 _ = require 'underscore'
 
 module.exports = (yast) ->
@@ -9,6 +10,9 @@ module.exports = (yast) ->
       return date
 
     timeSpentInPeriod: (user, from, to, callback) ->
+      timeSpentOnProjectInPeriod user, null, from, to, callback
+
+    timeSpentOnProjectInPeriod: (user, prj, from, to, callback) ->
       sumTime = (previous, current) ->
         previous + (current.finish - current.start)
       analytics =
@@ -17,7 +21,12 @@ module.exports = (yast) ->
           billableRecords = (record for record in records when record.billable)
           return billableRecords.reduce(sumTime, 0)
 
-      yanalytics.analyticsInPeriod user, from, to, analytics, (err, results) ->
+      if prj
+        fetchData = naan.curry yanalytics.analyticsForProjectInPeriod, user, prj
+      else
+        fetchData = naan.curry yanalytics.analyticsInPeriod, user
+
+      fetchData from, to, analytics, (err, results) ->
         return callback(err) if err
         callback(null, results.seconds, results.billableSeconds)
 

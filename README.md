@@ -81,6 +81,8 @@ Which would return an object such as this:
   `date`
 * yast.analytics.timeSpentInPeriod(user, from, to, callback) -> (err, seconds,
   billableSeconds)
+* yast.analytics.timeSpentOnProjectInPeriod(user, project, from, to, callback) -> (err, seconds,
+  billableSeconds)
 * yast.analytics.timeSpentInWeek(user, dateInWeek, callback) -> (err, seconds,
   billableSeconds)
 * yast.analytics.analyticsInPeriod(user, from, to, analytics, callback) -> (err,
